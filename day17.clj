@@ -14,6 +14,9 @@
 (defn can-pass? [cell]
   (contains? #{\. \|} cell))
 
+(defn free? [cell]
+  (= cell \.))
+
 (defn border? [cell]
   (= cell :border))
 
@@ -65,39 +68,38 @@
     (println (apply str row)))
   (println))
 
-(defn process [field spring]
+(defn process [[field start]]
   (loop [field field
          positions []
-         pos spring]
-    ; (prn pos)
-    ; (print-field field)
+         pos start]
     (let [[y x] pos
-          dst [(inc y) x]
-          [dy dx] dst
           curr-cell (cell-at field pos)
-          new-field (change-cell-at field dst \|)
-          down [(inc dy) dx]
+          new-field (change-cell-at field pos \|)
+          down [(inc y) x]
           down-cell (cell-at field down)]
       (if (can-pass? down-cell)
-        (recur new-field positions dst)
+        (recur new-field positions down)
         (if (border? down-cell)
           (if (empty? positions)
             new-field
             (recur new-field (rest positions) (first positions)))
-          (let [[left left-c] (left-stop field dst)
-                [right right-c] (right-stop field dst)]
-                ; _ (prn left right left-c right-c (wall? left-c) (wall? right-c) curr-cell)]
+          (let [[left left-c] (left-stop field pos)
+                [right right-c] (right-stop field pos)]
             (if (and (wall? left-c) (wall? right-c))
-              (recur (fill-volume new-field dy left right \~)
-                     positions spring)
-              (let [new-field (fill-volume new-field dy left right \|)]
-                (if (wall? left-c)
-                  (recur new-field positions [dy right])
-                  (if (wall? right-c)
-                    (recur new-field positions [dy left])
+              (recur (fill-volume new-field y left right \~)
+                     positions [(dec y) x])
+              (let [new-field (fill-volume new-field y left right \|)]
+                (if (free? right-c)
+                  (if (free? left-c)
                     (recur new-field
-                           (conj positions [dy right])
-                           [dy left])))))))))))
+                           (conj positions [y right])
+                           [y left])
+                    (recur new-field positions [y right]))
+                  (if (free? left-c)
+                    (recur new-field positions [y left])
+                    (if (empty? positions)
+                      new-field
+                      (recur new-field (rest positions) (first positions)))))))))))))
 
 
 (defn count-water [field]
@@ -117,51 +119,37 @@
   (and (<= x1 x x2)
        (<= y1 y y2)))
 
+(defn build-cell [ranges x y]
+  (if (some #(range-includes? % x y) ranges) \# \.))
+
+(defn range-points [[[x1 x2] [y1 y2]]]
+  (for [x (range x1 (inc x2))
+        y (range y1 (inc y2))]
+    [y x]))
+
+(defn add-range [field r]
+  (reduce #(change-cell-at %1 %2 \#)
+          field (range-points r)))
+
+(defn add-ranges [field rs]
+  (reduce #(add-range %1 %2) field rs))
+
 (defn parse-scan [lines]
   (let [ranges (parse-ranges lines)
         xs (flatten (map first ranges))
         ys (flatten (map second ranges))
-        min-x (apply min xs)
+        min-x (dec (apply min xs))
         min-y (apply min ys)
-        max-x (apply max xs)
+        max-x (inc (apply max xs))
         max-y (apply max ys)
-        height (inc max-y)]
-    (reduce
-      (fn [field y]
-        (conj
-          field
-          (reduce
-            (fn [row x]
-              (conj row
-                    (if (some #(range-includes? % x y) ranges) \# \.)))
-            []
-            (range min-x (inc max-x)))))
-      []
-      (range 0 height))))
-
-
-(test/is (= (parse-scan ["x=495, y=2..7"
-                         "y=7, x=495..501"
-                         "x=501, y=3..7"
-                         "x=498, y=2..4"
-                         "x=506, y=1..2"
-                         "x=498, y=10..13"
-                         "x=504, y=10..13"
-                         "y=13, x=498..504"])
-            (mapv #(vec (seq %)) ["............"
-                                  "...........#"
-                                  "#..#.......#"
-                                  "#..#..#....."
-                                  "#..#..#....."
-                                  "#.....#....."
-                                  "#.....#....."
-                                  "#######....."
-                                  "............"
-                                  "............"
-                                  "...#.....#.."
-                                  "...#.....#.."
-                                  "...#.....#.."
-                                  "...#######.."])))
+        width (- max-x min-x -1)
+        height (- max-y min-y -1)
+        field (vec (repeat height (vec (repeat width \.))))
+        wall-points (map (fn [[y x]] [(- y min-y) (- x min-x)])
+                         (apply concat
+                                (map #(range-points %) ranges)))
+        field (reduce #(change-cell-at %1 %2 \#) field wall-points)]
+    [field [0 (- 500 min-x)]]))
 
 
 (test/is (= (count-water
@@ -173,14 +161,10 @@
                              "x=506, y=1..2"
                              "x=498, y=10..13"
                              "x=504, y=10..13"
-                             "y=13, x=498..504"]) [0 6])) 57))
+                             "y=13, x=498..504"]))) 57))
 
-; (println
-;   (print-field
-;     (parse-scan
-;       (str/split (slurp "day17.txt") #"\n"))))
 (println
   (count-water
     (process
       (parse-scan
-        (str/split (slurp "day17.txt") #"\n")) [0 6])))
+        (str/split (slurp "day17.txt") #"\n")))))
