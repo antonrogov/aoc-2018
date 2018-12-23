@@ -102,10 +102,6 @@
                       (recur new-field (rest positions) (first positions)))))))))))))
 
 
-(defn count-water [field]
-  (count (filter #(contains? #{\| \~} %) (flatten field))))
-
-
 (defn parse-ranges [lines]
   (map #(let [[_ xy v1 v2 v3] (re-matches #"([xy])=(\d+), [xy]=(\d+)\.\.(\d+)" %)
               v1 (Integer/parseInt v1)
@@ -152,6 +148,10 @@
     [field [0 (- 500 min-x)]]))
 
 
+
+(defn count-water [field]
+  (count (filter #(contains? #{\| \~} %) (flatten field))))
+
 (test/is (= (count-water
               (process
                 (parse-scan ["x=495, y=2..7"
@@ -163,8 +163,23 @@
                              "x=504, y=10..13"
                              "y=13, x=498..504"]))) 57))
 
+
+(defn count-still-water [field]
+  (count (filter #(= % \~) (flatten field))))
+
+(test/is (= (count-still-water
+              (process
+                (parse-scan ["x=495, y=2..7"
+                             "y=7, x=495..501"
+                             "x=501, y=3..7"
+                             "x=498, y=2..4"
+                             "x=506, y=1..2"
+                             "x=498, y=10..13"
+                             "x=504, y=10..13"
+                             "y=13, x=498..504"]))) 29))
+
 (println
-  (count-water
+  (count-still-water
     (process
       (parse-scan
         (str/split (slurp "day17.txt") #"\n")))))
