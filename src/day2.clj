@@ -1,3 +1,5 @@
+(ns day2)
+
 (defn box-id-checksum [box-ids]
   (apply *
          (reduce (fn [[twos threes] [two three]]
@@ -28,5 +30,5 @@
 (prn (= (common-letters-of-correct-box-ids ["abcde" "fghij" "klmno" "pqrst" "fguij" "axcye" "wvxyz"]) "fgij"))
 
 
-(with-open [rdr (clojure.java.io/reader "day2.txt")]
+(with-open [rdr (clojure.java.io/reader "data/day2.txt")]
   (println (common-letters-of-correct-box-ids (line-seq rdr))))

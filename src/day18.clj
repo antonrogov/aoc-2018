@@ -1,4 +1,4 @@
-(ns aoc.day18
+(ns day18
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -71,7 +71,7 @@
                                    "|.||||..|."
                                    "...#.|..|."] 10) 1147))
 
-; (println (count-resource-value (str/split (slurp "day18.txt") #"\n") 10))
+; (println (count-resource-value (str/split (slurp "data/day18.txt") #"\n") 10))
 
 (defn resource-values [field max-minute]
   (loop [field field
@@ -86,7 +86,7 @@
 (defn value-after [minute pattern start]
   (get pattern (mod (- minute start) (count pattern))))
 
-(let [values (resource-values (str/split (slurp "day18.txt") #"\n") 500)
+(let [values (resource-values (str/split (slurp "data/day18.txt") #"\n") 500)
       start 431
       stop 458
       pattern (subvec values start (inc stop))]

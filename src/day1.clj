@@ -1,3 +1,5 @@
+(ns day1)
+
 (defn resulting-frequency [signals]
   (reduce + 0 signals))
 
@@ -11,5 +13,5 @@
 (prn (= (find-duplicate-frequency [3 3 4 -2 -4]) 10))
 (prn (= (find-duplicate-frequency [-6 3 8 5 -6]) 5))
 
-(with-open [rdr (clojure.java.io/reader "day1.txt")]
+(with-open [rdr (clojure.java.io/reader "data/day1.txt")]
   (println (find-duplicate-frequency (map #(Integer/parseInt %) (line-seq rdr)))))

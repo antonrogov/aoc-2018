@@ -1,4 +1,5 @@
-(require '[clojure.test :as test])
+(ns day4
+  (:require [clojure.test :as test]))
 
 (defn parse-guard-log [entries]
   (loop [remaining entries
@@ -96,5 +97,5 @@
                          "[1518-11-05 00:45] falls asleep"
                          "[1518-11-05 00:55] wakes up"])) 4455))
 
-(with-open [rdr (clojure.java.io/reader "day4.txt")]
+(with-open [rdr (clojure.java.io/reader "data/day4.txt")]
   (println (most-sleepy-minute-strategy (parse-log (sort (line-seq rdr))))))

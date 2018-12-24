@@ -1,4 +1,4 @@
-(ns aoc.day9
+(ns day9
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -77,5 +77,5 @@
               "10 players; last marble is worth 1618 points")
             [10 1618]))
 
-(let [[players turns] (parse-input (str/trim (slurp "day9.txt")))]
+(let [[players turns] (parse-input (str/trim (slurp "data/day9.txt")))]
   (println (winning-score players (* turns 100))))

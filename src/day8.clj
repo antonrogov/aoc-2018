@@ -1,4 +1,4 @@
-(ns aoc.day8
+(ns day8
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -32,4 +32,4 @@
 
 (test/is (= (sum-value (parse-tree "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2")) 66))
 
-(println (sum-value (parse-tree (str/trim (slurp "day8.txt")))))
+(println (sum-value (parse-tree (str/trim (slurp "data/day8.txt")))))

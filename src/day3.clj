@@ -1,4 +1,5 @@
-(require '[clojure.test :as test])
+(ns day3
+  (:require [clojure.test :as test]))
 
 (defn claiming-points [claim]
   (let [left (:left claim)
@@ -48,5 +49,5 @@
 (test/is (= (parse-claim "#1 @ 258,327: 19x22")
             {:id 1 :left 258 :top 327 :width 19 :height 22}))
 
-(with-open [rdr (clojure.java.io/reader "day3.txt")]
+(with-open [rdr (clojure.java.io/reader "data/day3.txt")]
   (println (first-non-overlapping-claim-id (map parse-claim (line-seq rdr)))))

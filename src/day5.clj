@@ -1,4 +1,4 @@
-(ns aoc.day5
+(ns day5
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -31,4 +31,4 @@
 
 (test/is (= (shortest-polymer-without-one-type "dabAcCaCBAcCcaDA") 4))
 
-(println (shortest-polymer-without-one-type (str/trim (slurp "day5.txt"))))
+(println (shortest-polymer-without-one-type (str/trim (slurp "data/day5.txt"))))

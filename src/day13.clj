@@ -1,4 +1,4 @@
-(ns aoc.day13
+(ns day13
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -117,5 +117,5 @@
                  (dissoc moving-carts (key moving))
                  (assoc moved-carts pos cart)))))))
 
-(with-open [rdr (clojure.java.io/reader "day13.txt")]
+(with-open [rdr (clojure.java.io/reader "data/day13.txt")]
   (println (last-cart-pos (parse-map (line-seq rdr)))))

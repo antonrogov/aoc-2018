@@ -1,4 +1,4 @@
-(ns aoc.day16
+(ns day16
   (:require [clojure.test :as test]
             [clojure.string :as str]
             [clojure.set :as cset]))
@@ -68,7 +68,7 @@
         (recur (merge known guessed))))))
 
 
-(let [[samples code] (str/split (slurp "day16.txt") #"\n\n\n\n")
+(let [[samples code] (str/split (slurp "data/day16.txt") #"\n\n\n\n")
       code (map parse-line (str/split (str/trim-newline code) #"\n"))
       samples (map parse-op (str/split samples #"\n\n"))
       codes (map-ops samples)]

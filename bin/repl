@@ -1,0 +1,3 @@
+#!/bin/bash
+
+clj -R:nREPL -m nrepl.cmdline -i -p ${1:-8889}

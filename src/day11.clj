@@ -1,4 +1,4 @@
-(ns aoc.day11
+(ns day11
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 

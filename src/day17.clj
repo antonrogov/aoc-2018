@@ -1,4 +1,4 @@
-(ns aoc.day17
+(ns day17
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -182,4 +182,4 @@
   (count-still-water
     (process
       (parse-scan
-        (str/split (slurp "day17.txt") #"\n")))))
+        (str/split (slurp "data/day17.txt") #"\n")))))

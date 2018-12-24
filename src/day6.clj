@@ -1,4 +1,4 @@
-(ns aoc.day6
+(ns day6
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -78,5 +78,5 @@
                    "5, 5"
                    "8, 9"]) 32)) 16)
 
-(with-open [rdr (clojure.java.io/reader "day6.txt")]
+(with-open [rdr (clojure.java.io/reader "data/day6.txt")]
   (println (largest-good-area-size (parse-points (line-seq rdr)) 10000)))

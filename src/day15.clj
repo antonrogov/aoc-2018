@@ -1,4 +1,4 @@
-(ns aoc.day15
+(ns day15
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -349,5 +349,5 @@
                                                          "#########"])) 1140))
 
 
-(with-open [rdr (clojure.java.io/reader "day15.txt")]
+(with-open [rdr (clojure.java.io/reader "data/day15.txt")]
   (println (time (elven-victory-with-lowest-power (parse-map (line-seq rdr))))))

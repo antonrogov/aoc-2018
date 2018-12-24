@@ -1,4 +1,4 @@
-(ns aoc.day7
+(ns day7
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -89,5 +89,5 @@
                             "Step F must be finished before step E can begin."] 0) 2)
               15))
 
-(with-open [rdr (clojure.java.io/reader "day7.txt")]
+(with-open [rdr (clojure.java.io/reader "data/day7.txt")]
   (println (time-to-process (parse-steps (line-seq rdr) 60) 5)))

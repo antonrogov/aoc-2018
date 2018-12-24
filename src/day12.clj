@@ -1,4 +1,4 @@
-(ns aoc.day12
+(ns day12
   (:require [clojure.test :as test]
             [clojure.string :as str]))
 
@@ -103,6 +103,6 @@
     (+ (sum-pots-with-plants final)
        (* (- gen final-num 1) num-plants))))
 
-(with-open [rdr (clojure.java.io/reader "day12.txt")]
+(with-open [rdr (clojure.java.io/reader "data/day12.txt")]
   (let [[state rules] (parse-input (line-seq rdr))]
     (println (sum-pots-with-plants-after state rules 50000000000))))

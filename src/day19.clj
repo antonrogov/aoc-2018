@@ -1,4 +1,4 @@
-(ns aoc.day19
+(ns day19
   (:require [clojure.test :as test]
             [clojure.string :as str]
             [clojure.set :as cset]))
@@ -27,7 +27,6 @@
    (loop [regs regs]
      (if-let [[op-name a b c] (get code (get regs ireg))]
        (let [op (get ops op-name)
-             _ (prn regs op-name a b c)
              new-regs (op regs a b c)
              fixed-regs (if (= (get new-regs 1) 10551260)
                           (assoc new-regs 1 3)
@@ -45,7 +44,6 @@
 (defn parse-code [lines]
   [(mapv parse-line (rest lines))
    (Integer/parseInt (re-find #"\d+" (first lines)))])
-
 (test/is (= (run (parse-code ["#ip 0"
                               "seti 5 0 1"
                               "seti 6 0 2"
@@ -55,9 +53,9 @@
                               "seti 8 0 4"
                               "seti 9 0 5"])) 7))
 
-; (prn (run (parse-code (str/split (slurp "day19.txt") #"\n")) [1 0 0 0 0 0]))
+; (prn (run (parse-code (str/split (slurp "data/day19.txt") #"\n")) [1 0 0 0 0 0]))
 
 (defn quant [n]
   (reduce + (filter #(= (mod n %) 0) (range 1 (inc n)))))
 
-(prn (quant 10551260))
+(println (quant 10551260))
